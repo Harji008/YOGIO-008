@@ -49,12 +49,19 @@ export default function Home() {
 
       <header className="absolute top-0 left-0 w-full p-4 flex justify-between items-center bg-black bg-opacity-70 z-10">
         <h1 className="text-3xl font-bold tracking-wide px-6">YOGIO</h1>
+
+        <Link href="/instructor/classes" className="text-blue-600 hover:underline">
+  👩‍🏫 Instructor Dashboard
+</Link>
+
+
         <nav className="space-x-6 px-6 flex items-center">
-        <Link href="/classes" className="text-gray-300 hover:text-white">Yoga Classes</Link>          <a href="#" className="text-gray-300 hover:text-white">Meditations</a>
-          <a href="#" className="text-gray-300 hover:text-white">Breathwork</a>
-          <a href="#" className="text-gray-300 hover:text-white">Courses</a>
-          <a href="#" className="text-gray-300 hover:text-white">Our Teachers</a>
-          <a href="#" className="text-gray-300 hover:text-white">Contact</a>
+        <Link href="/classes" className="text-gray-300 hover:text-white">Yoga Classes</Link>          
+        <a href="/yoga-videos" className="text-gray-300 hover:text-white">Yoga Videos</a>
+        <Link href="/courses" className="text-gray-300 hover:text-white">Courses</Link>
+          <Link href="/instructors" className="text-gray-300 hover:text-white">Our Teachers</Link>
+          <Link href="/contact" className="text-gray-300 hover:text-white">Contact</Link>
+          
 
           {/* Conditional Welcome */}
          {/* {userName ? (
@@ -100,6 +107,7 @@ export default function Home() {
         Register
       </button>
     </Link>
+    
   </>
 )}
 
@@ -115,12 +123,16 @@ export default function Home() {
           Enjoy personalized yoga & wellness to fit your lifestyle.
         </p>
         <div className="mt-6 flex gap-4">
-          <button className="px-6 py-3 bg-black text-white border border-white rounded-lg text-lg hover:bg-white hover:text-black transition">
-            View Live Classes Schedule
-          </button>
-          <button className="px-6 py-3 bg-red-600 text-white rounded-lg text-lg hover:bg-red-700 transition">
-            Try 7-Day Free Trial
-          </button>
+        <Link href="/classes">
+  <button className="px-6 py-3 bg-black text-white border border-white rounded-lg text-lg hover:bg-white hover:text-black transition">
+    View Live Classes Schedule
+  </button>
+</Link>
+          <Link href="/register">
+  <button className="px-6 py-3 bg-red-600 text-white rounded-lg text-lg hover:bg-red-700 transition">
+    New Student Special – $79 
+  </button>
+</Link>
         </div>
         <p className="mt-6 text-gray-300">
           Experience the best in yoga, meditation, Pilates, and fitness with world-class

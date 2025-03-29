@@ -10,9 +10,12 @@
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.49.1",
+    "lucide-react": "^0.485.0",
     "next": "^15.2.3",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "react-responsive-carousel": "^3.2.23",
+    "swiper": "^11.2.6"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
