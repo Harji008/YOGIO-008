@@ -25,18 +25,13 @@ export default function ClassesPage() {
         .from('classes')
         .select('*')
         .eq('date', selectedDate)
-  
+
       if (error) {
         console.error(error)
       } else {
         setClasses(data as YogaClass[])
       }
     }
-  
-    fetchClasses()
-  }, [selectedDate])
-
-  
 
     fetchClasses()
   }, [selectedDate])
