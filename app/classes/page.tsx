@@ -29,8 +29,8 @@ export default function ClassesPage() {
       if (error) {
         console.error(error)
       } else {
-        setClasses(data || [])
-    }
+        setClasses(data as YogaClass[])
+      }
     }
 
     fetchClasses()
