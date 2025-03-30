@@ -4,8 +4,19 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { supabase } from '../lib/supabaseClient'
 
+type YogaClass = {
+  id: string;
+  title: string;
+  style: string;
+  date: string;
+  time: string;
+  teacher: string;
+  slots: number;
+}
+
 export default function ClassesPage() {
-  const [classes, setClasses] = useState([])
+  const [classes, setClasses] = useState<YogaClass[]>([])
+  
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0])
 
   useEffect(() => {
@@ -18,8 +29,8 @@ export default function ClassesPage() {
       if (error) {
         console.error(error)
       } else {
-        const [classes, setClasses] = useState<any[]>([]);
-      }
+        setClasses(data || [])
+    }
     }
 
     fetchClasses()
