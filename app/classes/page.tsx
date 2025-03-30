@@ -15,8 +15,7 @@ type YogaClass = {
 }
 
 export default function ClassesPage() {
-  const [classes, setClasses] = useState<YogaClass[]>([])
-  
+  const [classes, setClasses] = useState<YogaClass[]>([])  // ✅ FIXED typing
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0])
 
   useEffect(() => {
@@ -29,7 +28,7 @@ export default function ClassesPage() {
       if (error) {
         console.error(error)
       } else {
-        setClasses(data as YogaClass[])
+        setClasses(data as YogaClass[])  // ✅ CAST the result properly
       }
     }
 
