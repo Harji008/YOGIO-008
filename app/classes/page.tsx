@@ -18,7 +18,7 @@ export default function ClassesPage() {
       if (error) {
         console.error(error)
       } else {
-        setClasses(data || [])
+        const [classes, setClasses] = useState<any[]>([]);
       }
     }
 
