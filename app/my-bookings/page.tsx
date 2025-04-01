@@ -4,18 +4,20 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { supabase } from '../lib/supabaseClient'
 
+interface ClassInfo {
+  title: string
+  date: string
+  time: string
+  teacher: string
+  meeting_link?: string
+}
+
 interface Booking {
   id: string
   class_id: string
   booked_at: string
   mode: string
-  classes: {
-    title: string
-    date: string
-    time: string
-    teacher: string
-    meeting_link?: string
-  }[]
+  classes: ClassInfo | null
 }
 
 export default function MyBookings() {
@@ -60,7 +62,13 @@ export default function MyBookings() {
       if (error) {
         console.error('Error fetching bookings:', error)
       } else {
-        setBookings(data as Booking[])
+        // ✅ Fix TypeScript: cast safely
+        const safeData = data?.map((booking: any) => ({
+          ...booking,
+          classes: Array.isArray(booking.classes) ? booking.classes[0] : booking.classes
+        })) || []
+
+        setBookings(safeData)
       }
     }
 
@@ -73,46 +81,6 @@ export default function MyBookings() {
       alert('Failed to cancel booking')
     } else {
       setBookings(bookings.filter(b => b.id !== bookingId))
-    }
-  }
-
-  const handleBooking = async (classId: string, mode: 'in-person' | 'livestream') => {
-    const { data: { user }, error: userError } = await supabase.auth.getUser()
-    if (userError || !user) {
-      alert('Please sign in to book a class.')
-      return
-    }
-
-    const { data: profile, error: profileError } = await supabase
-      .from('profiles')
-      .select('full_name')
-      .eq('user_id', user.id)
-      .single()
-
-    if (profileError) {
-      console.error('Profile fetch error:', profileError.message)
-      alert('Could not fetch user profile.')
-      return
-    }
-
-    const fullName = profile?.full_name || 'Unknown'
-
-    const { data: bookingData, error: insertError } = await supabase.from('bookings').insert([
-      {
-        user_id: user.id,
-        class_id: classId,
-        booked_at: new Date().toISOString(),
-        mode,
-        user_name: fullName,
-      },
-    ])
-
-    console.log('Insert Result:', bookingData, insertError)
-
-    if (insertError) {
-      alert('Booking failed: ' + insertError.message)
-    } else {
-      alert(`Successfully booked your ${mode} class!`)
     }
   }
 
@@ -140,18 +108,18 @@ export default function MyBookings() {
               key={booking.id}
               className="border rounded-xl p-6 shadow-sm hover:shadow-md transition"
             >
-              {booking.classes.map((cls, index) => (
-                <div key={index}>
-                  <h3 className="text-xl font-semibold text-purple-800 mb-1">{cls.title}</h3>
-                  <p><strong>Date:</strong> {cls.date}</p>
-                  <p><strong>Time:</strong> {cls.time}</p>
-                  <p><strong>Teacher:</strong> {cls.teacher}</p>
+              {booking.classes && (
+                <>
+                  <h3 className="text-xl font-semibold text-purple-800 mb-1">{booking.classes.title}</h3>
+                  <p><strong>Date:</strong> {booking.classes.date}</p>
+                  <p><strong>Time:</strong> {booking.classes.time}</p>
+                  <p><strong>Teacher:</strong> {booking.classes.teacher}</p>
 
-                  {cls.meeting_link && (
+                  {booking.classes.meeting_link && (
                     <p>
                       <strong>Join Zoom:</strong>{' '}
                       <a
-                        href={cls.meeting_link}
+                        href={booking.classes.meeting_link}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-blue-600 underline"
@@ -160,8 +128,8 @@ export default function MyBookings() {
                       </a>
                     </p>
                   )}
-                </div>
-              ))}
+                </>
+              )}
 
               <p><strong>Mode:</strong> {booking.mode === 'in-person' ? 'In-Person' : 'Livestream'}</p>
               <p className="text-sm text-gray-500 mt-1">
