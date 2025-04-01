@@ -23,7 +23,7 @@ export default function Register() {
       setError(error.message)
     } else {
       alert('Check your email to confirm registration!')
-      router.push('/profile')
+      router.push('/sign-in')
     }
   }
 

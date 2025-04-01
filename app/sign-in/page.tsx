@@ -10,8 +10,8 @@ export default function SignIn() {
   const [error, setError] = useState('')
   const router = useRouter()
 
-const [resetEmail, setResetEmail] = useState('');
-const [resetMessage, setResetMessage] = useState('');
+  const [resetEmail, setResetEmail] = useState('')
+  const [resetMessage, setResetMessage] = useState('')
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -25,25 +25,41 @@ const [resetMessage, setResetMessage] = useState('');
     if (error) {
       setError(error.message)
     } else {
-      alert('Sign in successful!')
-      router.push('/')
+      // ✅ Check if user has a profile
+      const {
+        data: { user },
+      } = await supabase.auth.getUser()
+
+      if (user) {
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('full_name')
+          .eq('user_id', user.id)
+          .single()
+
+        if (profile?.full_name) {
+          router.push('/') // Profile exists → go to home
+        } else {
+          router.push('/profile') // No profile → go create
+        }
+      }
     }
   }
 
   const handleResetPassword = async () => {
     if (!resetEmail) {
-      setResetMessage("Please enter your email.");
-      return;
+      setResetMessage("Please enter your email.")
+      return
     }
-  
-    const { error } = await supabase.auth.resetPasswordForEmail(resetEmail);
-  
+
+    const { error } = await supabase.auth.resetPasswordForEmail(resetEmail)
+
     if (error) {
-      setResetMessage(error.message);
+      setResetMessage(error.message)
     } else {
-      setResetMessage("Check your email for the password reset link!");
+      setResetMessage("Check your email for the password reset link!")
     }
-  };
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
@@ -67,26 +83,26 @@ const [resetMessage, setResetMessage] = useState('');
           required
         />
 
-<div className="mt-4">
-  <label className="block mb-1 text-sm">Forgot Password?</label>
-  <input
-    type="email"
-    placeholder="Enter your email"
-    value={resetEmail}
-    onChange={(e) => setResetEmail(e.target.value)}
-    className="w-full p-2 border rounded mb-2 text-black"
-  />
-  <button
-    onClick={handleResetPassword}
-    className="bg-blue-600 text-white px-4 py-2 rounded"
-  >
-    Send Reset Link
-  </button>
-  {resetMessage && <p className="mt-2 text-sm text-yellow-300">{resetMessage}</p>}
-</div>
+        <div className="mt-4">
+          <label className="block mb-1 text-sm">Forgot Password?</label>
+          <input
+            type="email"
+            placeholder="Enter your email"
+            value={resetEmail}
+            onChange={(e) => setResetEmail(e.target.value)}
+            className="w-full p-2 border rounded mb-2 text-black"
+          />
+          <button
+            onClick={handleResetPassword}
+            className="bg-blue-600 text-white px-4 py-2 rounded"
+            type="button"
+          >
+            Send Reset Link
+          </button>
+          {resetMessage && <p className="mt-2 text-sm text-yellow-600">{resetMessage}</p>}
+        </div>
 
-
-        <button type="submit" className="w-full bg-black text-white py-3 rounded hover:bg-gray-800">
+        <button type="submit" className="w-full bg-black text-white py-3 rounded hover:bg-gray-800 mt-4">
           Sign In
         </button>
         <p className="mt-4 text-center">
@@ -94,7 +110,5 @@ const [resetMessage, setResetMessage] = useState('');
         </p>
       </form>
     </div>
-
-    
   )
 }
