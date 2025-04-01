@@ -15,7 +15,7 @@ interface Booking {
     time: string
     teacher: string
     meeting_link?: string
-  }
+  }[];
 }
 
 export default function MyBookings() {
