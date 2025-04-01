@@ -15,7 +15,7 @@ interface Booking {
     time: string
     teacher: string
     meeting_link?: string
-  }[];
+  }[]
 }
 
 export default function MyBookings() {
@@ -31,7 +31,6 @@ export default function MyBookings() {
         return
       }
 
-      // Fetch user profile
       const { data: profile } = await supabase
         .from('profiles')
         .select('full_name')
@@ -40,7 +39,6 @@ export default function MyBookings() {
 
       setUserName(profile?.full_name || '')
 
-      // Fetch bookings with class info including meeting_link
       const { data, error } = await supabase
         .from('bookings')
         .select(`
@@ -62,7 +60,7 @@ export default function MyBookings() {
       if (error) {
         console.error('Error fetching bookings:', error)
       } else {
-        setBookings(data)
+        setBookings(data as Booking[])
       }
     }
 
@@ -85,7 +83,6 @@ export default function MyBookings() {
       return
     }
 
-    // Fetch full name from the profiles table
     const { data: profile, error: profileError } = await supabase
       .from('profiles')
       .select('full_name')
@@ -100,7 +97,6 @@ export default function MyBookings() {
 
     const fullName = profile?.full_name || 'Unknown'
 
-    // Insert booking including user_name
     const { data: bookingData, error: insertError } = await supabase.from('bookings').insert([
       {
         user_id: user.id,
@@ -122,8 +118,6 @@ export default function MyBookings() {
 
   return (
     <div className="max-w-4xl mx-auto p-8">
-
-      {/* ✅ Navigation Header */}
       <nav className="flex justify-between items-center mb-8">
         <h1 className="text-2xl font-bold text-purple-800">🧘 YOGIO</h1>
         <div className="space-x-4">
@@ -132,13 +126,11 @@ export default function MyBookings() {
         </div>
       </nav>
 
-      {/* 👋 Greeting */}
       <h2 className="text-2xl font-bold text-center mb-2">
         Hello {userName} <span className="inline-block">🧘</span>
       </h2>
       <h3 className="text-xl text-center mb-6 font-semibold">Your Booked Classes</h3>
 
-      {/* Booked Class Cards */}
       {bookings.length === 0 ? (
         <p className="text-center text-gray-500">You haven't booked any classes yet.</p>
       ) : (
@@ -148,25 +140,28 @@ export default function MyBookings() {
               key={booking.id}
               className="border rounded-xl p-6 shadow-sm hover:shadow-md transition"
             >
-              <h3 className="text-xl font-semibold text-purple-800 mb-1">{booking.classes.title}</h3>
-              <p><strong>Date:</strong> {booking.classes.date}</p>
-              <p><strong>Time:</strong> {booking.classes.time}</p>
-              <p><strong>Teacher:</strong> {booking.classes.teacher}</p>
+              {booking.classes.map((cls, index) => (
+                <div key={index}>
+                  <h3 className="text-xl font-semibold text-purple-800 mb-1">{cls.title}</h3>
+                  <p><strong>Date:</strong> {cls.date}</p>
+                  <p><strong>Time:</strong> {cls.time}</p>
+                  <p><strong>Teacher:</strong> {cls.teacher}</p>
 
-              {/* ✅ Show Zoom Link */}
-              {booking.classes.meeting_link && (
-                <p>
-                  <strong>Join Zoom:</strong>{' '}
-                  <a
-                    href={booking.classes.meeting_link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-600 underline"
-                  >
-                    Join Class
-                  </a>
-                </p>
-              )}
+                  {cls.meeting_link && (
+                    <p>
+                      <strong>Join Zoom:</strong>{' '}
+                      <a
+                        href={cls.meeting_link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600 underline"
+                      >
+                        Join Class
+                      </a>
+                    </p>
+                  )}
+                </div>
+              ))}
 
               <p><strong>Mode:</strong> {booking.mode === 'in-person' ? 'In-Person' : 'Livestream'}</p>
               <p className="text-sm text-gray-500 mt-1">
