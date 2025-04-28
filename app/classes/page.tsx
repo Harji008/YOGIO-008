@@ -110,9 +110,7 @@ export default function ClassesPage() {
 
       {/* In-Person / Livestream Buttons */}
       <div className="flex justify-center mb-6 space-x-4">
-        <button className="px-6 py-2 rounded-lg bg-gray-300 hover:bg-gray-400 transition">In-Person</button>
-        <button className="px-6 py-2 rounded-lg bg-gray-300 hover:bg-gray-400 transition">Livestream</button>
-      </div>
+       </div>
 
       {/* Class Listings */}
       {classes.length === 0 ? (
@@ -139,14 +137,9 @@ export default function ClassesPage() {
                     onClick={() => handleBooking(cls.id, 'in-person')}
                     className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-md transition"
                   >
-                    Book In-Person
+                    Book Live Stream Yoga
                   </button>
-                  <button
-                    onClick={() => handleBooking(cls.id, 'livestream')}
-                    className="bg-gray-800 hover:bg-black text-white px-6 py-2 rounded-md transition"
-                  >
-                    Book Livestream
-                  </button>
+                  
                 </div>
               </div>
             </div>

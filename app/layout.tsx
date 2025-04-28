@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
-import YogaGallery from "./components/YogaGallery"; // ✅ Default import
-import Footer from "./components/Footer"; // ✅ Footer component
+import YogaGallery from "./components/YogaGallery";
+import Footer from "./components/Footer";
+import FAQSection from './components/FAQSection';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,9 +32,153 @@ export default function RootLayout({
         <div className="min-h-screen flex flex-col">
           <main className="flex-grow">{children}</main>
 
-          {/* ✅ Add the gallery carousel just before the footer */}
+          {/* ✅ Yoga Moments Carousel */}
           <YogaGallery />
 
+          {/* 📰 Articles & Wellness Insights Section */}
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mt-20">
+            <h3 className="text-3xl sm:text-4xl font-bold mb-10 text-purple-800 text-center">
+              📰 Articles & Wellness Insights
+            </h3>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 md:gap-8">
+              {/* Article 1 */}
+              <div className="bg-gradient-to-r from-purple-700 via-purple-800 to-purple-900 rounded-2xl p-6 sm:p-8 shadow-xl hover:shadow-2xl transition-all">
+                <h4 className="text-xl sm:text-2xl font-semibold text-white mb-4">
+                  Yoga Benefits Beyond the Mat
+                </h4>
+                <p className="text-purple-100 mb-6 leading-relaxed text-sm sm:text-base">
+                  Discover how yoga can improve not just flexibility, but also mental well-being,
+                  heart health, and stress reduction. Explore the deeper benefits of yoga practice beyond the poses.
+                </p>
+                <a
+                  href="https://www.health.harvard.edu/staying-healthy/yoga-benefits-beyond-the-mat"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block px-5 py-2 bg-white text-purple-800 font-medium rounded-lg hover:bg-purple-200 transition"
+                >
+                  Read Full Article →
+                </a>
+              </div>
+
+              {/* Article 2 */}
+              <div className="bg-gradient-to-r from-pink-600 via-red-500 to-yellow-500 rounded-2xl p-6 sm:p-8 shadow-xl hover:shadow-2xl transition-all">
+                <h4 className="text-xl sm:text-2xl font-semibold text-white mb-4">
+                  How Yoga Helps Manage Anxiety and Depression
+                </h4>
+                <p className="text-white mb-6 leading-relaxed text-sm sm:text-base">
+                  Learn how specific yoga practices, including breathing exercises and mindfulness,
+                  can help ease anxiety and depression.
+                </p>
+                <a
+                  href="https://pmc.ncbi.nlm.nih.gov/articles/PMC3768217/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block px-5 py-2 bg-white text-red-700 font-medium rounded-lg hover:bg-red-200 transition"
+                >
+                  Read Full Article →
+                </a>
+              </div>
+
+              {/* Article 3 */}
+              <div className="bg-gradient-to-r from-green-600 via-teal-500 to-blue-600 rounded-2xl p-6 sm:p-8 shadow-xl hover:shadow-2xl transition-all">
+                <h4 className="text-xl sm:text-2xl font-semibold text-white mb-4">
+                  5 Science-Backed Reasons to Try Yoga Today
+                </h4>
+                <p className="text-white mb-6 leading-relaxed text-sm sm:text-base">
+                  Studies show yoga helps with chronic pain relief, better sleep, and improved mood.
+                  Here are five reasons to give it a try.
+                </p>
+                <a
+                  href="https://www.medicalnewstoday.com/articles/286745"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block px-5 py-2 bg-white text-green-700 font-medium rounded-lg hover:bg-green-200 transition"
+                >
+                  Read Full Article →
+                </a>
+              </div>
+
+              {/* Article 4 */}
+              <div className="bg-gradient-to-r from-yellow-500 via-orange-500 to-red-600 rounded-2xl p-6 sm:p-8 shadow-xl hover:shadow-2xl transition-all">
+                <h4 className="text-xl sm:text-2xl font-semibold text-white mb-4">
+                  Yoga and Heart Health: What You Need to Know
+                </h4>
+                <p className="text-white mb-6 leading-relaxed text-sm sm:text-base">
+                  Research suggests that yoga can lower blood pressure, cholesterol, and heart rate,
+                  making it a heart-friendly workout option.
+                </p>
+                <a
+                  href="https://www.hopkinsmedicine.org/health/wellness-and-prevention/the-yoga-heart-connection"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block px-5 py-2 bg-white text-yellow-800 font-medium rounded-lg hover:bg-yellow-300 transition"
+                >
+                  Read Full Article →
+                </a>
+              </div>
+            </div>
+          </div>
+
+          {/* 💬 Client Feedback / Testimonials Section */}
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mt-20 mb-16">
+            <h3 className="text-4xl font-bold mb-12 text-purple-800 text-center">
+              💬 What Our Clients Say
+            </h3>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+              {/* Feedback cards (keep your existing testimonial content) */}
+              {/* Testimonial 1 */}
+              <div className="relative bg-white rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all group overflow-hidden">
+                <div className="absolute -top-5 -left-5 opacity-10 text-[120px] leading-none text-purple-800">“</div>
+                <p className="text-gray-700 italic mb-6 leading-relaxed group-hover:scale-105 transition-transform">
+                  "The classes at YOGIO are truly transformative! The instructors are so supportive, and I feel mentally and physically refreshed after every session."
+                </p>
+                <div className="flex items-center space-x-4 mt-4">
+                  <div className="text-3xl bg-purple-100 rounded-full w-12 h-12 flex items-center justify-center border-2 border-purple-600">🧘‍♀️</div>
+                  <div>
+                    <p className="font-semibold text-purple-800">Emily R.</p>
+                    <p className="text-gray-500 text-sm">Baltimore, MD ⭐⭐⭐⭐⭐</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Testimonial 2 */}
+              <div className="relative bg-white rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all group overflow-hidden">
+                <div className="absolute -top-5 -left-5 opacity-10 text-[120px] leading-none text-pink-600">“</div>
+                <p className="text-gray-700 italic mb-6 leading-relaxed group-hover:scale-105 transition-transform">
+                  "As someone who struggles with anxiety, these yoga sessions have made a huge difference in my life. Highly recommend YOGIO for stress relief!"
+                </p>
+                <div className="flex items-center space-x-4 mt-4">
+                  <div className="text-3xl bg-pink-100 rounded-full w-12 h-12 flex items-center justify-center border-2 border-pink-500">🧘‍♂️</div>
+                  <div>
+                    <p className="font-semibold text-pink-600">Jason M.</p>
+                    <p className="text-gray-500 text-sm">New York, NY ⭐⭐⭐⭐⭐</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Testimonial 3 */}
+              <div className="relative bg-white rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all group overflow-hidden">
+                <div className="absolute -top-5 -left-5 opacity-10 text-[120px] leading-none text-green-600">“</div>
+                <p className="text-gray-700 italic mb-6 leading-relaxed group-hover:scale-105 transition-transform">
+                  "I love the flexibility of the class schedule and the variety of sessions. The online experience feels personal and interactive!"
+                </p>
+                <div className="flex items-center space-x-4 mt-4">
+                  <div className="text-3xl bg-green-100 rounded-full w-12 h-12 flex items-center justify-center border-2 border-green-500">🧘‍♀️</div>
+                  <div>
+                    <p className="font-semibold text-green-700">Sofia L.</p>
+                    <p className="text-gray-500 text-sm">Washington, D.C. ⭐⭐⭐⭐⭐</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* ❓ FAQ Section */}
+          <FAQSection />
+
+          {/* ✅ Footer */}
           <Footer />
         </div>
       </body>
