@@ -23,6 +23,8 @@ interface Booking {
 export default function MyBookings() {
   const [bookings, setBookings] = useState<Booking[]>([])
   const [userName, setUserName] = useState('')
+  const [feedback, setFeedback] = useState('')         // Feedback text
+  const [rating, setRating] = useState<number | null>(null)  // Feedback rating
 
   useEffect(() => {
     const fetchBookings = async () => {
@@ -62,7 +64,6 @@ export default function MyBookings() {
       if (error) {
         console.error('Error fetching bookings:', error)
       } else {
-        // ✅ Fix TypeScript: cast safely
         const safeData = data?.map((booking: any) => ({
           ...booking,
           classes: Array.isArray(booking.classes) ? booking.classes[0] : booking.classes
@@ -81,6 +82,31 @@ export default function MyBookings() {
       alert('Failed to cancel booking')
     } else {
       setBookings(bookings.filter(b => b.id !== bookingId))
+    }
+  }
+
+  const handleSubmitFeedback = async () => {
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) {
+      alert('Please log in')
+      return
+    }
+
+    if (!feedback || rating === null) {
+      alert('Please provide both rating and comment!')
+      return
+    }
+
+    const { error } = await supabase
+      .from('feedback')
+      .insert([{ user_id: user.id, rating, comment: feedback }])
+
+    if (error) {
+      alert('Error submitting feedback: ' + error.message)
+    } else {
+      alert('Thank you for your feedback!')
+      setFeedback('')
+      setRating(null)
     }
   }
 
@@ -145,6 +171,40 @@ export default function MyBookings() {
           ))}
         </div>
       )}
+
+      {/* ✅ Feedback Section */}
+      <div className="mt-12 border-t pt-8">
+        <h3 className="text-2xl font-bold text-purple-800 mb-4 text-center">📝 We’d love your feedback!</h3>
+        <div className="space-y-4 max-w-md mx-auto">
+          <label className="block text-lg font-medium text-gray-700">
+            Your Rating (1-5):
+            <input
+              type="number"
+              min="1"
+              max="5"
+              value={rating || ''}
+              onChange={(e) => setRating(Number(e.target.value))}
+              className="border mt-2 px-4 py-2 w-full rounded-md"
+              placeholder="Enter rating between 1-5"
+            />
+          </label>
+
+          <textarea
+            value={feedback}
+            onChange={(e) => setFeedback(e.target.value)}
+            placeholder="Leave your feedback here..."
+            className="border px-4 py-2 w-full rounded-md"
+            rows={4}
+          />
+
+          <button
+            onClick={handleSubmitFeedback}
+            className="px-6 py-2 bg-purple-800 text-white rounded-lg hover:bg-purple-900 transition"
+          >
+            Submit Feedback
+          </button>
+        </div>
+      </div>
     </div>
   )
 }
