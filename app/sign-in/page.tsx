@@ -25,7 +25,7 @@ export default function SignIn() {
     if (error) {
       setError(error.message)
     } else {
-      // ✅ Check if user has a profile
+    
       const {
         data: { user },
       } = await supabase.auth.getUser()
