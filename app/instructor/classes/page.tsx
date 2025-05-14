@@ -308,6 +308,15 @@ export default function InstructorClassesPage() {
                     >
                   {cls.is_canceled ? 'Class Canceled' : 'Cancel Class'}
               </button>
+
+              <div className="text-center mt-6">
+  <a
+    href="/feedback"
+    className="inline-block bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg transition"
+  >
+    View Student Feedback
+  </a>
+</div>
           </div>
         ))
       )}
