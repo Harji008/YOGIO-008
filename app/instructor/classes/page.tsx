@@ -102,6 +102,12 @@ export default function InstructorClassesPage() {
       return;
     }
   
+    
+
+
+
+
+
     // 2. Get all booked participants for this class
     const { data: bookingsData, error: bookingsError } = await supabase
       .from('bookings')
@@ -167,6 +173,19 @@ export default function InstructorClassesPage() {
     }
   }
 
+
+  const handleSendSMS = async () => {
+    try {
+      const res = await fetch('/api/send-sms');
+      const result = await res.json();
+      alert(result.message || 'SMS notifications sent!');
+    } catch (error) {
+      console.error('Error sending SMS:', error);
+      alert('Failed to send SMS notifications.');
+    }
+  };
+  
+
   if (accessDenied) {
     return <div className="text-center mt-10 text-red-500 text-lg font-semibold">Access Denied: Instructors Only</div>
   }
@@ -179,6 +198,18 @@ export default function InstructorClassesPage() {
     <div className="max-w-5xl mx-auto p-8 space-y-6">
       <h1 className="text-3xl font-bold text-purple-800 mb-6 text-center">Instructor Dashboard</h1>
       <Link href="/" className="text-blue-600 underline">← Back to Home</Link>
+
+
+
+
+      <div className="flex justify-end mb-6">
+  <button
+    onClick={handleSendSMS}
+    className="bg-yellow-400 hover:bg-yellow-500 text-black font-semibold py-2 px-6 rounded-lg shadow transition"
+  >
+    📤 Send SMS to Students
+  </button>
+</div>
 
       {/* ✅ Add New Class Form */}
       <div className="border rounded-xl p-6 shadow-md bg-white mb-8">
@@ -245,8 +276,19 @@ export default function InstructorClassesPage() {
           <button type="submit" className="bg-purple-700 text-white px-4 py-2 rounded hover:bg-purple-800">
             Add Class
           </button>
+
+
+          
         </form>
       </div>
+
+
+     
+
+
+
+
+
 
       {/* ✅ List of Existing Classes */}
       {classes.length === 0 ? (
@@ -308,6 +350,17 @@ export default function InstructorClassesPage() {
                     >
                   {cls.is_canceled ? 'Class Canceled' : 'Cancel Class'}
               </button>
+
+              <div className="text-center mt-6">
+  <a
+    href="/feedback"
+    className="inline-block bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg transition"
+  >
+    View Student Feedback
+  </a>
+</div>
+
+
           </div>
         ))
       )}
