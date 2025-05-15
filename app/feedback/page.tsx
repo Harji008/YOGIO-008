@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { createClient } from '@supabase/supabase-js';
 import { format } from 'date-fns';
 import {
   CircularProgressbar,
@@ -9,12 +8,7 @@ import {
 } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { useSpring, animated } from 'react-spring';
-
-// Supabase client
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+import { createClient } from '@supabase/supabase-js';
 
 // Feedback Type
 type Feedback = {
@@ -54,12 +48,22 @@ function AnimatedRating({ value }: { value: number }) {
   );
 }
 
-// ✅ Main Page
+// ✅ Main Feedback Page
 export default function FeedbackPage() {
   const [feedbackList, setFeedbackList] = useState<Feedback[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+    if (!supabaseUrl || !supabaseKey) {
+      console.error('Supabase environment variables are not defined.');
+      return;
+    }
+
+    const supabase = createClient(supabaseUrl, supabaseKey);
+
     const fetchFeedback = async () => {
       const { data, error } = await supabase
         .from('feedback')
